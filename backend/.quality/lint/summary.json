@@ -1,0 +1,719 @@
+{
+  "status": "issues_found",
+  "target_path": "/repos/smart-shop/backend",
+  "requested_linters": [
+    "ruff"
+  ],
+  "applicable_linters": [
+    "ruff"
+  ],
+  "selected_linters": [
+    "ruff"
+  ],
+  "message": "All findings, including any findings omitted from the inline response, are available in the report files listed under `report_paths`.",
+  "summary": {
+    "errors": 244,
+    "warnings": 0,
+    "total_findings": 244,
+    "inline_findings": 100,
+    "remaining_findings": 144,
+    "linters_run": 1,
+    "linters_with_issues": 1,
+    "linters_unavailable": 0
+  },
+  "by_tool": {
+    "ruff": {
+      "status": "issues_found",
+      "errors": 244,
+      "warnings": 0,
+      "total_findings": 244,
+      "inline_findings": 100,
+      "remaining_findings": 144,
+      "files": [
+        {
+          "path": "/repos/smart-shop/backend/alembic/env.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 2,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 15,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "`app.models.category` imported but unused",
+              "line": 17,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.product` imported but unused",
+              "line": 18,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.customer` imported but unused",
+              "line": 19,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.cart` imported but unused",
+              "line": 20,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.cart_item` imported but unused",
+              "line": 21,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.order` imported but unused",
+              "line": 22,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.order_item` imported but unused",
+              "line": 23,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.inventory` imported but unused",
+              "line": 24,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.warehouse` imported but unused",
+              "line": 25,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.discount` imported but unused",
+              "line": 26,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.review` imported but unused",
+              "line": 27,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.supplier` imported but unused",
+              "line": 28,
+              "column": 5,
+              "code": "F401"
+            },
+            {
+              "msg": "`app.models.audit_log` imported but unused",
+              "line": 29,
+              "column": 5,
+              "code": "F401"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/alembic/versions/6a13b344fd09_initial_database_schema.py",
+          "findings": [
+            {
+              "msg": "Trailing whitespace",
+              "line": 4,
+              "column": 9,
+              "code": "W291"
+            },
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 8,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/config.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 11,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 14,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 19,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 22,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 28,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 33,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 35,
+              "column": 27,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 36,
+              "column": 31,
+              "code": "UP045"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/routes/auth.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 31,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 35,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 45,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 62,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 74,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 77,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 91,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 94,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 99,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 106,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 113,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 116,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 129,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 143,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 146,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 152,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 166,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 169,
+              "column": 1,
+              "code": "W293"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/schemas/__init__.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 3,
+              "column": 1,
+              "code": "I001"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/schemas/auth.py",
+          "findings": [
+            {
+              "msg": "Blank line contains whitespace",
+              "line": 29,
+              "column": 1,
+              "code": "W293"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 43,
+              "column": 16,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 44,
+              "column": 12,
+              "code": "UP045"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/schemas/cart.py",
+          "findings": [
+            {
+              "msg": "`typing.List` is deprecated, use `list` instead",
+              "line": 3,
+              "column": 1,
+              "code": "UP035"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 35,
+              "column": 19,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `list` instead of `List` for type annotation",
+              "line": 59,
+              "column": 12,
+              "code": "UP006"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/schemas/category.py",
+          "findings": [
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 11,
+              "column": 18,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 18,
+              "column": 16,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 31,
+              "column": 18,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 32,
+              "column": 16,
+              "code": "UP045"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/schemas/common.py",
+          "findings": [
+            {
+              "msg": "`typing.List` is deprecated, use `list` instead",
+              "line": 2,
+              "column": 1,
+              "code": "UP035"
+            },
+            {
+              "msg": "Use `list` instead of `List` for type annotation",
+              "line": 12,
+              "column": 12,
+              "code": "UP006"
+            },
+            {
+              "msg": "Use `list` instead of `List` for type annotation",
+              "line": 19,
+              "column": 23,
+              "code": "UP006"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/schemas/discount.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 3,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 15,
+              "column": 23,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 18,
+              "column": 15,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 24,
+              "column": 20,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 25,
+              "column": 21,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 26,
+              "column": 23,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 27,
+              "column": 17,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 28,
+              "column": 15,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 29,
+              "column": 15,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 30,
+              "column": 16,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 39,
+              "column": 23,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 42,
+              "column": 15,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 60,
+              "column": 18,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 61,
+              "column": 21,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 62,
+              "column": 20,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 63,
+              "column": 12,
+              "code": "UP045"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/schemas/inventory.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 3,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 19,
+              "column": 19,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 20,
+              "column": 18,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 21,
+              "column": 21,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 41,
+              "column": 20,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 42,
+              "column": 30,
+              "code": "UP045"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/schemas/order.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 3,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 17,
+              "column": 19,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 18,
+              "column": 20,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 31,
+              "column": 23,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 32,
+              "column": 20,
+              "code": "UP045"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/schemas/product.py",
+          "findings": [
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 28,
+              "column": 11,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 29,
+              "column": 18,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 30,
+              "column": 12,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 31,
+              "column": 10,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 32,
+              "column": 12,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 33,
+              "column": 18,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 41,
+              "column": 19,
+              "code": "UP045"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/schemas/review.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 3,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 13,
+              "column": 18,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 22,
+              "column": 18,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 27,
+              "column": 20,
+              "code": "UP045"
+            }
+          ]
+        },
+        {
+          "path": "/repos/smart-shop/backend/app/schemas/supplier.py",
+          "findings": [
+            {
+              "msg": "Import block is un-sorted or un-formatted",
+              "line": 3,
+              "column": 1,
+              "code": "I001"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 14,
+              "column": 12,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 15,
+              "column": 14,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 16,
+              "column": 14,
+              "code": "UP045"
+            },
+            {
+              "msg": "Use `X | None` for type annotations",
+              "line": 18,
+              "column": 13,
+              "code": "UP045"
+            }
+          ]
+        }
+      ],
+      "report_path": "/repos/smart-shop/backend/.quality/lint/ruff-result.json",
+      "truncated": true
+    }
+  },
+  "report_dir": "/repos/smart-shop/backend/.quality/lint",
+  "report_paths": {
+    "summary": "/repos/smart-shop/backend/.quality/lint/summary.json",
+    "ruff": "/repos/smart-shop/backend/.quality/lint/ruff-result.json"
+  },
+  "truncated": true
+}

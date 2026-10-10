@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    x-preview-port: 8000
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:////data/app.db
+      JWT_SECRET: dev-secret-change-in-production-please
+      JWT_ALGORITHM: HS256
+      JWT_EXPIRATION_HOURS: 24
+      DEBUG: "true"
+      CORS_ORIGINS: http://localhost:80,http://localhost:5173
+    env_file:
+      - backend/dev.env
+    volumes:
+      - backend-data:/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health').read()"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        BACKEND_HOST: backend
+    x-preview-port: 80
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    environment:
+      BACKEND_HOST: backend
+
+volumes:
+  backend-data:

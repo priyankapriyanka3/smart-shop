@@ -1,0 +1,41 @@
+# Backend Dockerfile for Smart Shop FastAPI application
+# Builds a production-ready Python backend image with uvicorn server
+
+FROM python:3.11-slim as base
+
+# Install system dependencies required for Python packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy dependency files first (leverage Docker cache)
+COPY backend/pyproject.toml /app/
+
+# Install dependencies
+# ARG allows switching between SQLite-only and PostgreSQL builds
+ARG PIP_TARGET=.
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir "$PIP_TARGET"
+
+# Copy application code
+COPY backend/app /app/app
+COPY backend/alembic /app/alembic
+COPY backend/alembic.ini /app/alembic.ini
+
+# Copy entrypoint script for migrations and seeding
+COPY deployment/docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
+
+# Expose backend port
+EXPOSE 8000
+
+# Set default environment variables
+ENV DATABASE_URL=sqlite:////data/app.db \
+    BACKEND_PORT=8000 \
+    PYTHONUNBUFFERED=1
+
+# Entrypoint runs migrations, then starts server
+ENTRYPOINT ["sh", "./docker-entrypoint.sh"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
