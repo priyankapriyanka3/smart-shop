@@ -13,9 +13,9 @@ services:
       - "8000:8000"
     environment:
       DATABASE_URL: sqlite:////data/app.db
-      JWT_SECRET: dev-secret-change-in-production
-      BACKEND_PORT: 8000
-      CORS_ORIGINS: http://localhost,http://127.0.0.1
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET environment variable is required - generate with: openssl rand -base64 32}
+      BACKEND_PORT: ${BACKEND_PORT:-8000}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost,http://127.0.0.1}
     volumes:
       - db-data:/data
     restart: unless-stopped
