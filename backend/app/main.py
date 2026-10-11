@@ -6,7 +6,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.middleware.rate_limit import RateLimitMiddleware
 from app.routes import (
     cart_router,
     categories_router,
@@ -38,9 +37,6 @@ app = FastAPI(
     redoc_url="/api/redoc",
     openapi_url="/api/openapi.json",
 )
-
-# Rate limiting middleware (applied before CORS)
-app.add_middleware(RateLimitMiddleware)
 
 # CORS configuration
 app.add_middleware(
