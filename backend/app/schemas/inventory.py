@@ -1,8 +1,9 @@
 """Inventory schemas for request/response models."""
 
 from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
+
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -16,9 +17,9 @@ class InventoryResponse(BaseModel):
     last_updated: datetime
     created_at: datetime
     updated_at: datetime
-    product_name: Optional[str] = None
-    product_sku: Optional[str] = None
-    warehouse_name: Optional[str] = None
+    product_name: str | None = None
+    product_sku: str | None = None
+    warehouse_name: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -38,7 +39,7 @@ class LowStockItem(BaseModel):
     warehouse_name: str
     current_quantity: int
     reorder_level: int
-    supplier_name: Optional[str] = None
-    supplier_lead_time_days: Optional[int] = None
+    supplier_name: str | None = None
+    supplier_lead_time_days: int | None = None
 
     model_config = ConfigDict(from_attributes=True)

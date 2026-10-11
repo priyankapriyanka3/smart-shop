@@ -1,5 +1,4 @@
 """Tests for authentication routes."""
-import pytest
 
 from app.models.customer import Customer
 
@@ -14,10 +13,10 @@ def test_register_success(client):
             "full_name": "New User"
         }
     )
-    
+
     assert response.status_code == 201
     data = response.json()
-    
+
     assert "access_token" in data
     assert data["token_type"] == "bearer"
     assert "user" in data
@@ -37,7 +36,7 @@ def test_register_duplicate_email(client, sample_customer):
             "full_name": "Duplicate User"
         }
     )
-    
+
     assert response.status_code == 400
     assert "already registered" in response.json()["detail"].lower()
 
@@ -55,7 +54,7 @@ def test_register_weak_password(client):
     )
     assert response.status_code == 400
     assert "uppercase" in response.json()["detail"].lower()
-    
+
     # No lowercase
     response = client.post(
         "/api/auth/register",
@@ -67,7 +66,7 @@ def test_register_weak_password(client):
     )
     assert response.status_code == 400
     assert "lowercase" in response.json()["detail"].lower()
-    
+
     # No number
     response = client.post(
         "/api/auth/register",
@@ -91,7 +90,7 @@ def test_register_short_password(client):
             "full_name": "Short Pass User"
         }
     )
-    
+
     assert response.status_code == 422  # Pydantic validation error
 
 
@@ -104,10 +103,10 @@ def test_login_success(client, sample_customer):
             "password": "TestPassword123!"
         }
     )
-    
+
     assert response.status_code == 200
     data = response.json()
-    
+
     assert "access_token" in data
     assert data["token_type"] == "bearer"
     assert "user" in data
@@ -123,7 +122,7 @@ def test_login_wrong_password(client, sample_customer):
             "password": "WrongPassword123!"
         }
     )
-    
+
     assert response.status_code == 401
     assert "invalid" in response.json()["detail"].lower()
 
@@ -137,7 +136,7 @@ def test_login_nonexistent_user(client):
             "password": "SomePassword123!"
         }
     )
-    
+
     assert response.status_code == 401
     assert "invalid" in response.json()["detail"].lower()
 
@@ -148,10 +147,10 @@ def test_get_current_user(client, sample_customer, auth_headers):
         "/api/auth/me",
         headers=auth_headers
     )
-    
+
     assert response.status_code == 200
     data = response.json()
-    
+
     assert data["email"] == sample_customer.email
     assert data["full_name"] == sample_customer.full_name
     assert data["role"] == sample_customer.role
@@ -160,7 +159,7 @@ def test_get_current_user(client, sample_customer, auth_headers):
 def test_get_current_user_unauthorized(client):
     """Test getting profile without authentication."""
     response = client.get("/api/auth/me")
-    
+
     assert response.status_code == 401  # API returns 401 for missing/invalid auth
 
 
@@ -170,7 +169,7 @@ def test_get_current_user_invalid_token(client):
         "/api/auth/me",
         headers={"Authorization": "Bearer invalid.jwt.token"}
     )
-    
+
     assert response.status_code == 401
 
 
@@ -183,10 +182,10 @@ def test_update_profile_full_name(client, sample_customer, auth_headers):
             "full_name": "Updated Name"
         }
     )
-    
+
     assert response.status_code == 200
     data = response.json()
-    
+
     assert data["full_name"] == "Updated Name"
     assert data["email"] == sample_customer.email
 
@@ -200,10 +199,10 @@ def test_update_profile_email(client, sample_customer, auth_headers):
             "email": "newemail@example.com"
         }
     )
-    
+
     assert response.status_code == 200
     data = response.json()
-    
+
     assert data["email"] == "newemail@example.com"
 
 
@@ -219,7 +218,7 @@ def test_update_profile_duplicate_email(client, test_db, sample_customer, auth_h
     )
     test_db.add(other_customer)
     test_db.commit()
-    
+
     # Try to update to the other user's email
     response = client.put(
         "/api/auth/profile",
@@ -228,7 +227,7 @@ def test_update_profile_duplicate_email(client, test_db, sample_customer, auth_h
             "email": "other@example.com"
         }
     )
-    
+
     assert response.status_code == 400
     assert "in use" in response.json()["detail"].lower()
 
@@ -241,5 +240,5 @@ def test_update_profile_unauthorized(client):
             "full_name": "Should Fail"
         }
     )
-    
+
     assert response.status_code == 401

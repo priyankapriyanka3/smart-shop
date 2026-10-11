@@ -17,28 +17,26 @@ Required Environment Variables (Production):
 - PAYMENT_TIMEOUT_SECONDS: Request timeout (default: 30)
 """
 
-import os
 import logging
-from typing import Optional
+import uuid
 from datetime import datetime
 from decimal import Decimal
-import uuid
 
 logger = logging.getLogger(__name__)
 
 
 class PaymentOutcome:
     """Payment result with status and transaction details."""
-    
+
     def __init__(
         self,
         status: str,
-        transaction_id: Optional[str] = None,
-        error_message: Optional[str] = None,
-        raw_response: Optional[dict] = None
+        transaction_id: str | None = None,
+        error_message: str | None = None,
+        raw_response: dict | None = None
     ):
         """Initialize payment outcome.
-        
+
         Args:
             status: Payment status (succeeded, failed, pending)
             transaction_id: Provider transaction identifier
@@ -54,7 +52,7 @@ class PaymentOutcome:
 
 class PaymentProvider:
     """Abstract payment provider interface."""
-    
+
     def submit_payment(
         self,
         amount: Decimal,
@@ -63,13 +61,13 @@ class PaymentProvider:
         payment_method_token: str
     ) -> PaymentOutcome:
         """Submit payment to provider.
-        
+
         Args:
             amount: Payment amount
             currency: Currency code (USD, EUR, etc.)
             order_id: Smart Shop order ID for reference
             payment_method_token: Tokenized payment method
-            
+
         Returns:
             PaymentOutcome with status and transaction details
         """
@@ -78,15 +76,15 @@ class PaymentProvider:
 
 class MockPaymentProvider(PaymentProvider):
     """Mock payment provider for development and testing.
-    
+
     Simulates payment outcomes based on amount thresholds:
     - Amount < $1.00: Simulates declined card
     - Amount >= $1000.00: Simulates processing timeout
     - All other amounts: Simulates successful payment
-    
+
     Real payment providers will replace this with actual API integration.
     """
-    
+
     def submit_payment(
         self,
         amount: Decimal,
@@ -95,13 +93,13 @@ class MockPaymentProvider(PaymentProvider):
         payment_method_token: str
     ) -> PaymentOutcome:
         """Simulate payment submission.
-        
+
         Args:
             amount: Payment amount
             currency: Currency code (default USD in mock)
             order_id: Smart Shop order ID
             payment_method_token: Simulated payment token
-            
+
         Returns:
             PaymentOutcome with simulated result
         """
@@ -109,7 +107,7 @@ class MockPaymentProvider(PaymentProvider):
             f"Mock payment submission: order_id={order_id}, "
             f"amount={amount} {currency}, token={payment_method_token[:8]}..."
         )
-        
+
         # Simulate different outcomes based on amount
         if amount < Decimal("1.00"):
             transaction_id = f"mock_declined_{uuid.uuid4().hex[:8]}"
@@ -120,7 +118,7 @@ class MockPaymentProvider(PaymentProvider):
                 error_message="Card declined - insufficient funds (mock)",
                 raw_response={"mock": True, "reason": "amount_too_low"}
             )
-        
+
         if amount >= Decimal("1000.00"):
             transaction_id = f"mock_timeout_{uuid.uuid4().hex[:8]}"
             logger.warning(f"Mock payment timeout: {transaction_id}")
@@ -130,7 +128,7 @@ class MockPaymentProvider(PaymentProvider):
                 error_message="Payment provider timeout (mock)",
                 raw_response={"mock": True, "reason": "simulated_timeout"}
             )
-        
+
         # Successful payment
         transaction_id = f"mock_success_{uuid.uuid4().hex[:8]}"
         logger.info(f"Mock payment succeeded: {transaction_id}")
@@ -148,10 +146,10 @@ class MockPaymentProvider(PaymentProvider):
 
 class PaymentService:
     """Payment service orchestrating payment provider interactions."""
-    
-    def __init__(self, provider: Optional[PaymentProvider] = None):
+
+    def __init__(self, provider: PaymentProvider | None = None):
         """Initialize payment service with provider.
-        
+
         Args:
             provider: Payment provider implementation (defaults to mock)
         """
@@ -160,7 +158,7 @@ class PaymentService:
             provider = MockPaymentProvider()
             logger.info("Using MockPaymentProvider (development mode)")
         self.provider = provider
-    
+
     def process_payment(
         self,
         amount: Decimal,
@@ -169,23 +167,23 @@ class PaymentService:
         payment_method_token: str
     ) -> PaymentOutcome:
         """Process payment for order.
-        
+
         Args:
             amount: Payment amount
             currency: Currency code
             order_id: Smart Shop order ID
             payment_method_token: Tokenized payment method
-            
+
         Returns:
             PaymentOutcome with result
-            
+
         Raises:
             ValueError: If amount is invalid
             RuntimeError: If payment provider fails catastrophically
         """
         if amount <= 0:
             raise ValueError("Payment amount must be positive")
-        
+
         try:
             outcome = self.provider.submit_payment(
                 amount=amount,
@@ -193,16 +191,16 @@ class PaymentService:
                 order_id=order_id,
                 payment_method_token=payment_method_token
             )
-            
+
             # Log outcome for audit trail
             logger.info(
                 f"Payment processed: order_id={order_id}, "
                 f"status={outcome.status}, "
                 f"transaction_id={outcome.transaction_id}"
             )
-            
+
             return outcome
-            
+
         except Exception as e:
             logger.error(f"Payment provider error: {e}", exc_info=True)
             # Return failed outcome instead of raising
@@ -218,7 +216,7 @@ payment_service = PaymentService()
 
 def get_payment_service() -> PaymentService:
     """Get payment service instance.
-    
+
     Returns:
         PaymentService instance (uses mock provider in development)
     """

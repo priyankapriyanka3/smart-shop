@@ -1,74 +1,94 @@
 """Test configuration and fixtures."""
-import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from fastapi.testclient import TestClient
+import os
 
-from app.database import Base, get_db
-from app.main import app
+import pytest
+from fastapi.testclient import TestClient
+from sqlalchemy import create_engine, event
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
+
+# Disable OpenTelemetry for tests to prevent connection attempts and hangs
+os.environ["OTEL_SDK_DISABLED"] = "true"
 
 # Import all models to ensure they are registered with Base
-from app.models import (  # noqa: F401
-    audit_log,
-    cart,
-    cart_item,
-    category,
-    customer,
-    discount,
-    inventory,
-    order,
-    order_item,
-    product,
-    review,
-    supplier,
-    warehouse,
-)
-
+import app.models.audit_log  # noqa: F401
+import app.models.cart  # noqa: F401
+import app.models.cart_item  # noqa: F401
+import app.models.category  # noqa: F401
+import app.models.customer  # noqa: F401
+import app.models.discount  # noqa: F401
+import app.models.inventory  # noqa: F401
+import app.models.order  # noqa: F401
+import app.models.order_item  # noqa: F401
+import app.models.product  # noqa: F401
+import app.models.review  # noqa: F401
+import app.models.supplier  # noqa: F401
+import app.models.warehouse  # noqa: F401
+from app.database import Base, get_db
+from app.main import app
 from app.models.category import Category
 from app.models.customer import Customer
+from app.models.inventory import Inventory
 from app.models.product import Product
 from app.models.warehouse import Warehouse
-from app.models.inventory import Inventory
-
-
-# Use in-memory SQLite for tests with shared cache
-# Note: Using ?mode=memory&cache=shared to ensure all connections share the same in-memory database
-TEST_DATABASE_URL = "sqlite:///file:test_db?mode=memory&cache=shared&uri=true"
 
 
 @pytest.fixture(scope="function")
-def test_db():
-    """Create test database session with all tables."""
+def test_engine():
+    """Create a test database engine with shared in-memory database."""
+    # Use StaticPool to ensure all connections share the same in-memory database
     engine = create_engine(
-        TEST_DATABASE_URL,
+        "sqlite:///:memory:",
         connect_args={"check_same_thread": False},
+        poolclass=StaticPool,  # Critical: shares one connection across all sessions
     )
-    
+
+    # Enable foreign keys for SQLite
+    @event.listens_for(engine, "connect")
+    def set_sqlite_pragma(dbapi_conn, connection_record):
+        cursor = dbapi_conn.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+
     # Create all tables
     Base.metadata.create_all(bind=engine)
-    
-    TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-    db = TestingSessionLocal()
-    
+
+    yield engine
+
+    # Cleanup
+    Base.metadata.drop_all(bind=engine)
+    engine.dispose()
+
+
+@pytest.fixture(scope="function")
+def test_db(test_engine):
+    """Create test database session with all tables."""
+    testing_session_local = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
+    db = testing_session_local()
+
     try:
         yield db
     finally:
+        db.rollback()
         db.close()
-        Base.metadata.drop_all(bind=engine)
-        engine.dispose()
 
 
 @pytest.fixture(scope="function")
-def client(test_db):
+def client(test_engine):
     """Create test client with overridden database dependency."""
+    # Create a session factory bound to the test engine
+    testing_session_local = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
+
     def override_get_db():
+        """Override get_db to return test database session."""
+        db = testing_session_local()
         try:
-            yield test_db
+            yield db
         finally:
-            pass
+            db.close()
 
     app.dependency_overrides[get_db] = override_get_db
-    
+
     try:
         with TestClient(app) as test_client:
             yield test_client
@@ -112,7 +132,7 @@ def sample_product(test_db, sample_category):
 def sample_customer(test_db):
     """Create sample customer with properly hashed password."""
     from app.auth.password import hash_password
-    
+
     customer = Customer(
         email="test@example.com",
         password_hash=hash_password("TestPassword123!"),
@@ -158,6 +178,6 @@ def sample_inventory(test_db, sample_product, sample_warehouse):
 def auth_headers(sample_customer):
     """Create authentication headers for test requests."""
     from app.auth.jwt import create_access_token
-    
+
     token = create_access_token(sample_customer.id, sample_customer.role)
     return {"Authorization": f"Bearer {token}"}

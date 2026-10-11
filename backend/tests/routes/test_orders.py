@@ -2,11 +2,11 @@
 
 import pytest
 
+from app.models.category import Category
 from app.models.customer import Customer
 from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.models.product import Product
-from app.models.category import Category
 
 
 @pytest.fixture
@@ -32,7 +32,7 @@ def test_order(test_db, test_customer):
     test_db.add(category)
     test_db.commit()
     test_db.refresh(category)
-    
+
     product = Product(
         name="Test Product",
         description="A test product",
@@ -45,7 +45,7 @@ def test_order(test_db, test_customer):
     test_db.add(product)
     test_db.commit()
     test_db.refresh(product)
-    
+
     # Create order
     order = Order(
         customer_id=test_customer.id,
@@ -56,7 +56,7 @@ def test_order(test_db, test_customer):
     test_db.add(order)
     test_db.commit()
     test_db.refresh(order)
-    
+
     # Create order item
     order_item = OrderItem(
         order_id=order.id,
@@ -66,7 +66,7 @@ def test_order(test_db, test_customer):
     )
     test_db.add(order_item)
     test_db.commit()
-    
+
     return order
 
 

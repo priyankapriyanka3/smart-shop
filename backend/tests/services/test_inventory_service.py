@@ -5,11 +5,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from app.database import Base
-from app.models.product import Product
 from app.models.category import Category
-from app.models.warehouse import Warehouse
-from app.models.inventory import Inventory
 from app.models.customer import Customer
+from app.models.inventory import Inventory
+from app.models.product import Product
+from app.models.warehouse import Warehouse
 from app.services import inventory_service
 
 # Test database setup
@@ -42,7 +42,7 @@ def test_inventory_record(db_session):
     db_session.add(category)
     db_session.commit()
     db_session.refresh(category)
-    
+
     # Create product
     product = Product(
         name="Test Product",
@@ -56,13 +56,13 @@ def test_inventory_record(db_session):
     db_session.add(product)
     db_session.commit()
     db_session.refresh(product)
-    
+
     # Create warehouse
     warehouse = Warehouse(name="Main Warehouse", location="Location A")
     db_session.add(warehouse)
     db_session.commit()
     db_session.refresh(warehouse)
-    
+
     # Create inventory record
     inventory = Inventory(
         product_id=product.id,
@@ -73,7 +73,7 @@ def test_inventory_record(db_session):
     db_session.add(inventory)
     db_session.commit()
     db_session.refresh(inventory)
-    
+
     return inventory
 
 
@@ -123,7 +123,7 @@ def test_get_low_stock_items(db_session, test_inventory_record):
     # Update inventory to be below reorder level
     test_inventory_record.quantity = 5
     db_session.commit()
-    
+
     low_stock = inventory_service.get_low_stock_items(db_session)
     assert len(low_stock) >= 1
     assert low_stock[0]["current_quantity"] == 5

@@ -1,6 +1,5 @@
 """Cart schemas."""
 from decimal import Decimal
-from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -32,7 +31,7 @@ class ProductSummary(BaseModel):
     brand: str
     price: Decimal
     sku: str
-    stock_status: Optional[str] = None
+    stock_status: str | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -56,7 +55,7 @@ class CartResponse(BaseModel):
 
     id: int
     customer_id: int
-    items: List[CartItemResponse]
+    items: list[CartItemResponse]
     total_items: int
     subtotal: Decimal
     created_at: str

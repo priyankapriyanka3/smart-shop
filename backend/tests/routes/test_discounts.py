@@ -1,10 +1,11 @@
 """Tests for discount routes."""
 
-import pytest
 from datetime import datetime, timedelta
 
-from app.models.discount import Discount
+import pytest
+
 from app.models.customer import Customer
+from app.models.discount import Discount
 
 
 @pytest.fixture

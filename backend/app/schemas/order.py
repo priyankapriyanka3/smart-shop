@@ -1,9 +1,10 @@
 """Order schemas for request/response models."""
 
 from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
 from decimal import Decimal
+
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -14,8 +15,8 @@ class OrderItemResponse(BaseModel):
     product_id: int
     quantity: int
     unit_price: Decimal
-    product_name: Optional[str] = None
-    product_brand: Optional[str] = None
+    product_name: str | None = None
+    product_brand: str | None = None
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
@@ -28,8 +29,8 @@ class OrderResponse(BaseModel):
     order_date: datetime
     total_amount: Decimal
     status: str
-    delivery_address: Optional[str] = None
-    discount_code: Optional[str] = None
+    delivery_address: str | None = None
+    discount_code: str | None = None
     created_at: datetime
     updated_at: datetime
     items: list[OrderItemResponse] = []

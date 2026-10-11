@@ -28,11 +28,11 @@ def register(
 ):
     """
     Register a new customer account.
-    
+
     - **email**: Unique email address
     - **password**: Password (min 8 characters)
     - **full_name**: Customer's full name
-    
+
     Returns JWT token and user information.
     """
     # Check if email already exists
@@ -42,7 +42,7 @@ def register(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered"
         )
-    
+
     # Validate password complexity (basic check - can be extended)
     if not any(c.isupper() for c in request.password):
         raise HTTPException(
@@ -59,7 +59,7 @@ def register(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Password must contain at least one number"
         )
-    
+
     # Create new customer
     customer = Customer(
         email=request.email,
@@ -71,10 +71,10 @@ def register(
     db.add(customer)
     db.commit()
     db.refresh(customer)
-    
+
     # Generate token
     access_token = create_access_token(customer.id, customer.role)
-    
+
     return TokenResponse(
         access_token=access_token,
         user=UserResponse.model_validate(customer)
@@ -88,32 +88,32 @@ def login(
 ):
     """
     Authenticate and sign in a customer.
-    
+
     - **email**: Customer email
     - **password**: Customer password
-    
+
     Returns JWT token and user information.
     """
     # Find customer by email
     customer = db.query(Customer).filter(Customer.email == request.email).first()
-    
+
     # Generic error message for security (don't reveal if email exists)
     if not customer or not verify_password(request.password, customer.password_hash):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid email or password"
         )
-    
+
     # Check if account is active
     if not customer.is_active:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Account is disabled"
         )
-    
+
     # Generate token
     access_token = create_access_token(customer.id, customer.role)
-    
+
     return TokenResponse(
         access_token=access_token,
         user=UserResponse.model_validate(customer)
@@ -126,7 +126,7 @@ def get_current_user_profile(
 ):
     """
     Get the current authenticated user's profile.
-    
+
     Requires authentication via Bearer token.
     """
     return UserResponse.model_validate(current_user)
@@ -140,16 +140,16 @@ def update_profile(
 ):
     """
     Update the current user's profile.
-    
+
     - **full_name**: New full name (optional)
     - **email**: New email address (optional)
-    
+
     Requires authentication via Bearer token.
     """
     # Update full name if provided
     if request.full_name is not None:
         current_user.full_name = request.full_name
-    
+
     # Update email if provided
     if request.email is not None:
         # Check if new email is already taken by another user
@@ -163,8 +163,8 @@ def update_profile(
                 detail="Email already in use"
             )
         current_user.email = request.email
-    
+
     db.commit()
     db.refresh(current_user)
-    
+
     return UserResponse.model_validate(current_user)
