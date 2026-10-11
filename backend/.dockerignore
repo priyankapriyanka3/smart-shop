@@ -1,0 +1,38 @@
+# Python
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.mypy_cache
+.ruff_cache
+*.egg-info
+build
+dist
+
+# Environment and sensitive files
+.env
+*.db
+test_*.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+SEED_VERIFICATION.md
+
+# Test files
+tests/
+
+# Include required files (ensure these are NOT excluded)
+!pyproject.toml
+!alembic.ini

@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: smart-shop-backend
+    environment:
+      DATABASE_URL: sqlite:////data/app.db
+      SECRET_KEY: dev-secret-key-change-in-production
+      CORS_ORIGINS: http://localhost,http://frontend
+      DEBUG: "true"
+    volumes:
+      - data:/data
+    ports:
+      - "9000:9000"
+    x-preview-port: 9000
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:9000/api/v1/catalog/categories')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - smart-shop-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      args:
+        BACKEND_HOST: backend
+    container_name: smart-shop-frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "80:80"
+    x-preview-port: 80
+    networks:
+      - smart-shop-network
+
+volumes:
+  data:
+    driver: local
+
+networks:
+  smart-shop-network:
+    driver: bridge
