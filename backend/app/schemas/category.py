@@ -1,5 +1,4 @@
 """Category schemas."""
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -8,14 +7,14 @@ class CategoryBase(BaseModel):
     """Base category schema."""
 
     name: str = Field(..., min_length=1, max_length=255)
-    description: Optional[str] = None
+    description: str | None = None
 
 
 class CategoryResponse(CategoryBase):
     """Category response schema."""
 
     id: int
-    parent_id: Optional[int] = None
+    parent_id: int | None = None
     is_active: bool
     created_at: str
     updated_at: str
@@ -28,8 +27,8 @@ class CategoryList(BaseModel):
 
     id: int
     name: str
-    description: Optional[str] = None
-    parent_id: Optional[int] = None
+    description: str | None = None
+    parent_id: int | None = None
     is_active: bool
     subcategories: list["CategoryList"] = []
 

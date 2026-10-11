@@ -172,8 +172,8 @@ def test_remove_cart_item_not_found(client):
 
 def test_cart_calculates_totals_correctly(client, test_db, sample_customer, sample_category, sample_warehouse):
     """Test cart calculates totals correctly with multiple items."""
-    from app.models.product import Product
     from app.models.inventory import Inventory
+    from app.models.product import Product
 
     # Create multiple products
     product1 = Product(

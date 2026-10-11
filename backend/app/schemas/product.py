@@ -1,6 +1,5 @@
 """Product schemas."""
 from decimal import Decimal
-from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -25,12 +24,12 @@ class ProductCreate(ProductBase):
 class ProductUpdate(BaseModel):
     """Product update schema - all fields optional."""
 
-    name: Optional[str] = Field(None, min_length=1, max_length=255)
-    description: Optional[str] = Field(None, min_length=1)
-    brand: Optional[str] = Field(None, min_length=1, max_length=255)
-    sku: Optional[str] = Field(None, min_length=1, max_length=100)
-    price: Optional[Decimal] = Field(None, gt=0, decimal_places=2)
-    category_id: Optional[int] = Field(None, gt=0)
+    name: str | None = Field(None, min_length=1, max_length=255)
+    description: str | None = Field(None, min_length=1)
+    brand: str | None = Field(None, min_length=1, max_length=255)
+    sku: str | None = Field(None, min_length=1, max_length=100)
+    price: Decimal | None = Field(None, gt=0, decimal_places=2)
+    category_id: int | None = Field(None, gt=0)
 
 
 class ProductResponse(ProductBase):
@@ -38,7 +37,7 @@ class ProductResponse(ProductBase):
 
     id: int
     is_active: str
-    stock_status: Optional[str] = None  # Computed: in_stock, low_stock, out_of_stock
+    stock_status: str | None = None  # Computed: in_stock, low_stock, out_of_stock
     created_at: str
     updated_at: str
 

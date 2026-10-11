@@ -1,7 +1,6 @@
 """
 Authentication request/response schemas.
 """
-from typing import Optional
 
 from pydantic import BaseModel, EmailStr, Field
 
@@ -26,7 +25,7 @@ class UserResponse(BaseModel):
     full_name: str
     role: str
     is_active: bool
-    
+
     class Config:
         from_attributes = True
 
@@ -40,5 +39,5 @@ class TokenResponse(BaseModel):
 
 class ProfileUpdateRequest(BaseModel):
     """Profile update request."""
-    full_name: Optional[str] = Field(None, min_length=1)
-    email: Optional[EmailStr] = None
+    full_name: str | None = Field(None, min_length=1)
+    email: EmailStr | None = None

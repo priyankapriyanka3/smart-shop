@@ -1,5 +1,4 @@
 """Tests for product routes."""
-import pytest
 from fastapi import status
 
 
