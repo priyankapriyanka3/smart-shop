@@ -1,0 +1,52 @@
+# Docker Compose configuration for Smart Shop
+# SQLite-based local deployment with backend, frontend, and database persistence
+
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.backend
+    container_name: smart-shop-backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: sqlite:////data/app.db
+      JWT_SECRET: dev-secret-change-in-production
+      BACKEND_PORT: 8000
+      CORS_ORIGINS: http://localhost,http://127.0.0.1
+    volumes:
+      - db-data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    x-preview-port: 8000
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.frontend
+      args:
+        BACKEND_HOST: backend
+    container_name: smart-shop-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    x-preview-port: 80
+
+volumes:
+  db-data:
+    driver: local

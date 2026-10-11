@@ -1,0 +1,43 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+*.md
+
+# CI/CD
+.github
+
+# Verification harness
+.verification
+_test.env
+_server.log
+_server.pid
+_start_server.py
+_stop_server.py
+
+# Logs
+*.log
+logs/
+.pids
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+graphify-out
+.pass_summaries

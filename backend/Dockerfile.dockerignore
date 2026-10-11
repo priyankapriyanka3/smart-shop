@@ -1,0 +1,24 @@
+# Backend-specific ignore
+.venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache
+.coverage
+htmlcov
+*.egg-info
+tests
+.quality
+__pipeline_smoke__
+
+# Environment and database
+.env
+_test.env
+*.db
+*.sqlite
+*.sqlite3
+
+# Build artifacts
+build/
+dist/
