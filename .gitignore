@@ -12,6 +12,9 @@ _server.pid
 # Process management
 .pids
 
+# Verification artifacts
+.verification/
+
 # Database
 storage/app.db
 storage/backups/
